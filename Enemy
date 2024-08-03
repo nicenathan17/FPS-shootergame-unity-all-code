@@ -1,0 +1,50 @@
+//the player gameobject needs the tag Player and the bullet gameobject tag needs to be Bullet
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Enemy : MonoBehaviour
+{
+    public float speed = 3f; // Speed at which the enemy moves
+    public float attackRadius = 10f; // Radius within which the enemy will attack the player
+    private Transform player; // Reference to the player
+
+    void Start()
+    {
+        // Find the player GameObject in the scene
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
+    void Update()
+    {
+        // Check if the player is within the attack radius
+        if (player != null && Vector3.Distance(transform.position, player.position) <= attackRadius)
+        {
+            MoveTowardsPlayer();
+        }
+    }
+
+    void MoveTowardsPlayer()
+    {
+        // Move towards the player
+        Vector3 direction = (player.position - transform.position).normalized;
+        transform.Translate(direction * speed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Check if the enemy collided with a bullet
+        if (other.tag == "Bullet")
+        {
+            // Destroy the enemy
+            Destroy(gameObject);
+        }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        // Draw a red sphere in the editor to show the attack radius
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRadius);
+    }
+}
