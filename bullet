@@ -1,3 +1,4 @@
+//also put the bullet prefab to the tag Bullet
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
