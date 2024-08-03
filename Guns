@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Guns : MonoBehaviour
+{
+    public GameObject bulletPrefab; // Bullet prefab to instantiate
+    public Transform firePoint; // Point from which the bullets will be fired
+    public float fireRate = 1f; // Bullets per second
+
+    private float nextTimeToFire = 0f;
+
+    void Update()
+    {
+        // Check if left mouse button is pressed and the time to fire has been reached
+        if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire)
+        {
+            nextTimeToFire = Time.time + 1f / fireRate;
+            Shoot();
+        }
+    }
+
+    void Shoot()
+    {
+        // Instantiate a bullet at the fire point's position and rotation
+        Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    }
+}
