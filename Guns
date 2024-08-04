@@ -9,7 +9,7 @@ public class Guns : MonoBehaviour
     [SerializeField] TextMeshProUGUI ammotext;
     public int bullets;
     public GameObject bulletPrefab; // Bullet prefab to instantiate
-    public Transform firePoint; // Point from which the bullets will be fired
+    public Transform firePoint; // Point from which the bullets will be fired just make a emty game object and place it at the tip of the gun the put it into this slot
     public float fireRate = 1f; // Bullets per second
 
     private float nextTimeToFire = 0f;
