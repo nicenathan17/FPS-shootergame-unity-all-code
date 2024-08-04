@@ -1,20 +1,38 @@
-// to learn how to use this watch this video https://www.youtube.com/watch?v=XAC8U9-dTZU
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class Guns : MonoBehaviour
 {
+    [SerializeField] TextMeshProUGUI ammotext;
+    public int bullets;
     public GameObject bulletPrefab; // Bullet prefab to instantiate
     public Transform firePoint; // Point from which the bullets will be fired
     public float fireRate = 1f; // Bullets per second
 
     private float nextTimeToFire = 0f;
 
+    private void Start()
+    {
+        bullets = 30;
+        UpdateAmmoText();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("ammo"))
+        {
+            Destroy(other.gameObject);
+            bullets += 30;
+            UpdateAmmoText();
+        }
+    }
+
     void Update()
     {
-        // Check if left mouse button is pressed and the time to fire has been reached
-        if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire)
+        if (Input.GetMouseButton(0) && Time.time >= nextTimeToFire && bullets > 0)
         {
             nextTimeToFire = Time.time + 1f / fireRate;
             Shoot();
@@ -23,7 +41,13 @@ public class Guns : MonoBehaviour
 
     void Shoot()
     {
-        // Instantiate a bullet at the fire point's position and rotation
+        bullets -= 1;
+        UpdateAmmoText();
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+    }
+
+    void UpdateAmmoText()
+    {
+        ammotext.text = bullets.ToString();
     }
 }
