@@ -1,4 +1,8 @@
 //also put the bullet prefab to the tag Bullet
+
+
+
+//also the bullet prefab goes in the bullet prefab slot in the guns script
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
