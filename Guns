@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+// if you want something to be a ammo box give it the ammo tag
 public class Guns : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI ammotext;
