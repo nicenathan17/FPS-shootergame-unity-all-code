@@ -1,0 +1,48 @@
+//ladder needs the tag ladder
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class ladderclimb : MonoBehaviour
+{
+    public float climbSpeed = 5f;
+    private bool isClimbing = false;
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("ladder"))
+        {
+            isClimbing = true;
+            rb.useGravity = false; // Disable gravity while climbing
+            rb.velocity = Vector3.zero; // Stop any existing movement
+            Debug.Log("Entered Ladder Trigger");
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("ladder"))
+        {
+            isClimbing = false;
+            rb.useGravity = true; // Re-enable gravity when not climbing
+            Debug.Log("Exited Ladder Trigger");
+        }
+    }
+
+    void Update()
+    {
+        if (isClimbing)
+        {
+            float verticalInput = Input.GetAxis("Vertical");
+            Vector3 climbDirection = new Vector3(0, verticalInput * climbSpeed, 0);
+            rb.MovePosition(transform.position + climbDirection * Time.deltaTime);
+            Debug.Log("Climbing with input: " + verticalInput);
+        }
+    }
+}
