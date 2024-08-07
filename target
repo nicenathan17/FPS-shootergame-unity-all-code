@@ -2,14 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class target : MonoBehaviour
 {
     public healthbar healthbar;
     public float health;
+    public GameObject deathUI;
+    private bool isdead;
     // Start is called before the first frame update
     void Start()
     {
+        isdead = false;
+        deathUI.SetActive(false);
         healthbar.SetMaxHealth(100);
         health = 100;
     }
@@ -17,11 +21,28 @@ public class target : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isdead == true)
+        {
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                restart();
+            }
+
+        }
+
         healthbar.SetHealth(health);
         if (health <= 0)
         {
             Die();
         }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "storm")
+        {
+            health -= 0.03f;
+        }
+        
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -31,6 +52,11 @@ public class target : MonoBehaviour
             Debug.Log("has hit bullet");
             health -= 1;
         }
+        if (other.tag == "storm")
+        {
+            health -= 0.03f;
+        }
+
         if (other.tag == "shotgunbullet")
         {
             health -= 7;
@@ -46,7 +72,15 @@ public class target : MonoBehaviour
     }
     public void Die()
     {
-        Destroy(gameObject);
+        isdead = true;
+        deathUI.SetActive(true);
+       // Destroy(gameObject);
     }
+    public void restart()
+    {
+        isdead = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 3);
+    }
+
 
 }
